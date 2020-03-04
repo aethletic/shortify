@@ -10,7 +10,7 @@ class Utils
 	 *
 	 * @param int $lenght Длинна кода (идентификатора)
 	 *
-	 * @return string Код идентификатор
+	 * @return string Код (идентификатор)
 	 */
 	public static function generateCode($lenght = 7)
 	{
@@ -80,6 +80,7 @@ class Utils
 	 * @return array|bool Массив с данными в случае успеха или false в случае ошибки
 	 */
 	public static function getUserGeoByIP($ip) {
+		// если ip не формата 111.11.111.11
 		if (strpos($ip, ':') !== false or strpos($ip, '.') == false) {
 			return false;
 		}

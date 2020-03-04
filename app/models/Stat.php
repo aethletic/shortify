@@ -20,7 +20,7 @@ class Stat
 	/**
 	 * Запись информации о посетителе и увеличение счетчика clicks
 	 *
-	 * @param string $code Код (идентификатора) короткой ссылками
+	 * @param string $code Код (идентификатор) короткой ссылки
 	 */
 	public static function addNewClick($code)
 	{
@@ -29,6 +29,8 @@ class Stat
 
 		$userIP = Utils::getUserIP();
 
+		// если ip адрес не получен, то записываем только юзерагент и дату визита
+		// ip адресс будет записан как Unknown
 		if ($userIP) {
 			$geoData = Utils::getUserGeoByIP($userIP);
 		} else {
@@ -40,6 +42,7 @@ class Stat
 		$newVisitor['useragent'] = $_SERVER['HTTP_USER_AGENT'] ?? 'Unknown useragent';
 		$newVisitor['visit_date'] = time();
 
+		// если успешно получили гео данные посетителя
 		if ($geoData) {
 			$newVisitor['city'] = $geoData['geoplugin_city'] ?? 'Unknown city';
 			$newVisitor['region'] = $geoData['geoplugin_region'] ?? 'Unknown region';
@@ -47,12 +50,15 @@ class Stat
 			$newVisitor['countryCode'] = $geoData['geoplugin_countryCode'] ?? 'Unknown country code';
 		}
 
+		// данные из БД о предыдущих посещениях
 		$visitorsData = json_decode($row['visitors'], true);
+
+		// вставляем новые данные
 		$visitorsData[] = $newVisitor;
 
 		$updateData = [
 			'clicks' => (int) $row['clicks'] + 1,
-			'visitors' => json_encode($visitorsData),
+			'visitors' => json_encode($visitorsData), // данные о посетителях хранятся в json
 		];
 
 		$db->table('links')->where('code', '=', $code)->update($updateData);
@@ -71,7 +77,7 @@ class Stat
 	/**
 	 * Получить данные о городах, для отображения в диаграмме
 	 *
-	 * @param string $code Код (идентификатора) короткой ссылками
+	 * @param string $code Код (идентификатор) короткой ссылки
 	 *
 	 * @return array Массив с городами и их кол-вом
 	 */

@@ -2,17 +2,17 @@
 
 class StatController
 {
-	/**
-	 * Страница со статистикой (только инпут и кнопка)
-	 */
+    /**
+     * Страница со статистикой (только инпут и кнопка)
+     */
     public static function statPage()
     {
         return View::render('stat.html');
     }
 
     /**
-	 * Страница с топ ссылками
-	 */
+     * Страница с топ ссылками
+     */
     public static function topPage()
     {
         $topData['top'] = Stat::getTopByVisits(10);
@@ -20,10 +20,10 @@ class StatController
     }
 
     /**
-	 * Отображение статистики на странице
-	 *
-	 * @param string $shortUrl Короткая ссылка или её код (идентификатор)
-	 */
+     * Отображение статистики на странице
+     *
+     * @param string $shortUrl Короткая ссылка или её код (идентификатор)
+     */
     public static function getStat($shortUrl)
     {
     	if (strpos($shortUrl, '/') !== false) {

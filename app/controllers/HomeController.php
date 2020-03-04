@@ -8,17 +8,17 @@
 */
 class HomeController
 {
-	/**
-	 * Домашняя страница
-	 */
+    /**
+     * Домашняя страница
+     */
     public static function homePage()
     {
         return View::render('home.html');
     }
 
     /**
-	 * Создание короткой ссылки
-	 */
+     * Создание короткой ссылки
+     */
     public static function createShortUrl()
     {
         // чтение php://input
@@ -68,10 +68,10 @@ class HomeController
     }
 
     /**
-	 * Перенаправление с короткой ссылки на исходную
-	 *
-	 * @param string|null $code Код (идентификатор) ссылки
-	 */
+     * Перенаправление с короткой ссылки на исходную
+     *
+     * @param string|null $code Код (идентификатор) ссылки
+     */
     public static function redirect($code = null)
     {
     	if (!App::existCode($code) or $code == null) {

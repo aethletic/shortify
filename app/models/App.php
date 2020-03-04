@@ -16,6 +16,7 @@ class App
 	 */
 	public static function createShortUrl($fullUrl, $code, $expire)
 	{
+		// TODO: хранить имена в отдельном файле или таблице
 		switch ($expire) {
 		    case 0:
 		        $expire_name = "Бессконечно";
@@ -59,14 +60,15 @@ class App
 			'expire_name' => $expire_name, // просто хардом забиваем название и читаем на фронте
 			'expire_date' => $expire_date, // дата истечения сроки действия ссылки
 			'clicks' => 0, // кол-во переходов по ссылке (клики)
-			'visitors' => '{}', // json массив с данными пользователей перешедших по ссылке
+			'visitors' => '{}', // json массив с данными посетителей перешедших по ссылке
 		];
 
 		DB::init()->table('links')->insert($insertData);
 
+		// отдаем результат на фронт
 		return [
-			'shortUrl' => Utils::getBaseUrl() . '/' . $code,
-			'statUrl' => Utils::getBaseUrl() . '/stat/' . $code,
+			'shortUrl' => Utils::getBaseUrl() . '/' . $code, // созданная ссылка
+			'statUrl' => Utils::getBaseUrl() . '/stat/' . $code, // ссылка на статистику созданной ссылки
 		];
 	}
 
@@ -102,6 +104,7 @@ class App
 		}
 
 		$diff = $expireDate - time();
+
 		return $diff < 0 ? true : false;
 	}
 
