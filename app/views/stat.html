@@ -1,0 +1,166 @@
+{% extends "template/template.html" %}
+
+{% block title %}Статистика - {% endblock %}
+
+{% block css %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.css">
+{% endblock %}
+
+{% block content %}
+{% if error == true %}
+<div class="alert alert-danger alert-dismissible fade show" role="alert">
+    <strong>{{ caption }}</strong> {{ message }}
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+{% endif %}
+
+<!-- Короткая ссылка, кнопка -->
+<div class="row">
+    <div class="col-md-12 col-12 col-sm-12 col-lg-10">
+        <input id="shortUrl" type="text" class="form-control " placeholder="https://go.botify.ru/shorturl или shorturl" aria-describedby="addon-wrapping">
+        <label class="mb-0 mt-0 text-muted text-size-14" for="">Вставьте короткую ссылку, чтобы увидеть статистику</label>
+    </div>
+
+    <div class="col-md col col-lg-2 mt-sm-2 mt-lg-0 mt-2 ">
+        <button id="getStat" class="btn btn-primary w-100" type="button" name="button">Проверить</button>
+    </div>
+</div>
+<!-- Конец Короткая ссылка, кнопка -->
+
+{% if show_stat %}
+<!-- Блок с информацией о ссылке -->
+<div class="card mt-4 mb-4">
+    <div class="card-header text-muted text-size-14 font-weight-bold">
+        Статистика: {{ code }}
+    </div>
+
+    <div class="card-body text-muted ">
+        <div class="row">
+            <div class="col mb">
+                <div class="text-size-14">
+                    <strong>Исходная ссылка:</strong> <a href="{{ full_url }}" target="_blank">{{ full_url }}</a>
+                </div>
+                <div class="text-size-14 mb-2">
+                    <strong>Короткая ссылка:</strong> <a href="{{ short_url }}" target="_blank">{{ short_url }}</a>
+                </div>
+
+                <div class="text-size-14">
+                    <strong>Срок действия ссылки:</strong> {{ expire_name }}
+                </div>
+                <div class="text-size-14">
+                    <strong>Дата создания:</strong> {{ create_date | date("d.m.Y H:i:s")}}
+                </div>
+                <div class="text-size-14 mb-2">
+                    <strong>Срок истекает:</strong>
+                    {% if expire_date == 0 %}
+                        Никогда
+                    {% else %}
+                        {{ expire_date | date("d.m.Y H:i:s") }}
+                    {% endif %}
+
+                </div>
+                <div class="text-size-14">
+                    <strong>Переходов:</strong> {{ clicks }}
+                </div>
+            </div>
+
+            <div class="col-auto">
+                <div class="d-none d-md-block float-right">
+                    <canvas id="myChart" ></canvas>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+<!-- Конец Блок с информацией о ссылке -->
+
+<!-- Блоки с информацией о переходах -->
+<div class="card text-muted mb-4">
+    <div class="card-header text-size-14 font-weight-bold">
+        Информация о переходах
+    </div>
+    {% if visitors|length > 0 %}
+        {% for visitor in visitors %}
+            <div class="pl-4 pr-4 pb-2">
+                <div class="row">
+                    <div class="mt-2 small col-sm-12 col-12 col-md-12 col-lg-auto">
+                        <strong>{{ visitor.visit_date | date("d.m.Y H:i:s")}}, {{ visitor.ip }}</strong>
+                    </div>
+                </div>
+
+                {% if visitor.country and visitor.city and visitor.region and visitor.countryCode %}
+                    <div class="row">
+                        <div class="small col-sm-12 col-12 col-md-12 col-lg-auto">
+                            <img class="" src="https://www.countryflags.io/{{ visitor.countryCode }}/shiny/16.png" alt="{{ visitor.countryCode }}"> {{ visitor.country }}, {{ visitor.city }}, {{ visitor.region }}
+                        </div>
+                    </div>
+                {% endif %}
+
+                <div class="row">
+                    <div class="small col-sm-12 col-12 col-md-12 col-lg-auto">
+                        {{ visitor.useragent }}
+                    </div>
+                </div>
+            </div>
+
+            {% if loop.last == false %}
+                <hr class="mt-0 mb-0" />
+            {% endif %}
+
+        {% endfor %}
+    {% else %}
+    <div class="small mb-0 p-3">
+        Ещё никто не перешёл по ссылке
+    </div>
+    {% endif %}
+</div>
+<!-- Конец Блоки с информацией о переходах -->
+{% endif %}
+{% endblock %}
+
+{% block js %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.bundle.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/chartjs-plugin-colorschemes@0.4.0"></script>
+
+<script>
+    $(document).ready(function() {
+        $("#getStat").click(function() {
+            let shortUrl = $("#shortUrl").val().trim();
+            if (shortUrl) {
+                code = shortUrl.split('/').pop();
+                window.location.replace(`/stat/${code}`);
+            }
+        });
+
+        {% if show_stat %}
+        var data = {
+            labels: {{ chartLabels|raw}},
+            datasets: [{
+                label: '# of Cities',
+                data: {{ chartData }},
+            }]
+        };
+
+        var ctx = $("#myChart");
+
+        Chart.defaults.global.legend.display = false;
+
+        var myPieChart = new Chart(ctx, {
+            type: 'pie',
+            data: data,
+            options: {
+                plugins: {
+                    colorschemes: {
+                        scheme: 'tableau.Classic20'
+                    }
+                }
+            }
+        });
+        {% endif %}
+
+    });
+</script>
+{% endblock %}

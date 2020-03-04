@@ -1,0 +1,27 @@
+{% extends "template/template.html" %}
+
+{% block title %}Топ - {% endblock %}
+
+{% block content %}
+<div class="h4 text-muted">
+    Топ 10 по переходам
+</div>
+<ul class="list-group text-muted">
+{% if top|length > 0 %}
+    {% for t in top %}
+        <li class="list-group-item small">
+            {{ loop.index }}. <a href="/{{t.code}}" target="_blank">{{t.code}}</a>
+
+            (Переходов: {{ t.clicks}}, <a href="/stat/{{t.code}}">смотреть статистику</a>)
+        </li>
+    {% endfor %}
+{% else %}
+    Записей не найдено
+{% endif %}
+</ul>
+
+{% endblock %}
+
+{% block js %}
+
+{% endblock %}

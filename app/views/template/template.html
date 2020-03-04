@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="theme-color" content="#007bff" />
+
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon.png">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css">
+    <link rel="stylesheet" href="/assets/css/app.css">
+
+    {% block css %}{% endblock %}
+
+    <title>{% block title %}{% endblock %}Shortify</title>
+</head>
+
+<body>
+    <div class="container">
+        <!-- Шапка -->
+        <header>
+            <div class="row">
+                <div class="col">
+                    <a class="shortify-logo text-primary" href="/">
+                        shortify.
+                    </a>
+
+                </div>
+
+                <div class="col-12 col-sm-auto col-md-auto col-lg-auto m-0 my-auto">
+                    <div class="row">
+                        <div class="col-auto">
+                            <a href="/" class="btn btn-link p-0 mt-1 mb-2 mb-sm-0 mb-md-0 mb-lg-0 nav-item">Создать</a>
+                        </div>
+                        <div class="col-auto">
+                            <a href="/stat" class="btn btn-link p-0 mt-1 mb-2 mb-sm-0 mb-md-0 mb-lg-0 nav-item">Статистика</a>
+                        </div>
+                        <div class="col-auto">
+                            <a href="/top" class="btn btn-link p-0 mt-1 mb-2 mb-sm-0 mb-md-0 mb-lg-0 nav-item">Топ</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="lead text-size-14 mt-0 mb-sm-4 mb-md-4 mb-lg-4 mb-0 d-none d-sm-block d-md-block">
+                Создание коротких ссылок без регистрации
+            </div>
+        </header>
+        <!-- Конец Шапка -->
+
+        {% block content %}{% endblock %}
+    </div>
+
+    <!--<footer>-->
+    <!--	<div class="text-center text-muted small mt-4">&copy; 2020 Shortify.</div>-->
+    <!--</footer>-->
+
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+
+    {% block js %}{% endblock %}
+</body>
+
+</html>
