@@ -1,13 +1,5 @@
 <?php
 
-$router->get('/db', function() {
-    echo '<pre>';
-    print_r(Stat::getCitiesCount('qq'));
-    // print_r(DB::init()->table('links')->get());
-    // print_r(Utils::getUserGeoByIP(Utils::getUserIP()));
-    echo '</pre>';
-});
-
 // главная страница
 $router->get('/', 'HomeController@homePage');
 
