@@ -24,9 +24,6 @@ class Stat
 	 */
 	public static function addNewClick($code)
 	{
-		$db = DB::init();
-		$row = $db->table('links')->where('code', '=', $code)->get()[0];
-
 		$userIP = Utils::getUserIP();
 
 		// если ip адрес не получен, то записываем только юзерагент и дату визита
@@ -50,6 +47,9 @@ class Stat
 			$newVisitor['countryCode'] = $geoData['geoplugin_countryCode'] ?? 'Unknown country code';
 		}
 
+		$db = DB::init();
+		$row = $db->table('links')->where('code', '=', $code)->get()[0];
+
 		// данные из БД о предыдущих посещениях
 		$visitorsData = json_decode($row['visitors'], true);
 
@@ -71,7 +71,7 @@ class Stat
 	 */
 	public static function getTopByVisits($count = 10)
 	{
-		return DB::init()->table('links')->orderBy('clicks', 'desc')->limit(10)->get();
+		return DB::init()->table('links')->orderBy('clicks', 'desc')->limit($count)->get();
 	}
 
 	/**
@@ -90,7 +90,6 @@ class Stat
 
 		foreach ($visitors as $visitorRow) {
 			$visitorsData = json_decode($visitorRow['visitors'], true);
-
 			foreach ($visitorsData as $visitorData) {
 				$label = trim($visitorData['city']) == '' ? 'Unknown' : "{$visitorData['city']} ({$visitorData['country']})";
 
