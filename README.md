@@ -1,5 +1,6 @@
 ## Shortify 🌎✈️
-Shorten long links wev service/
+
+Shorten long links wev service.
 
 Demo: https://go.botify.ru/
 
