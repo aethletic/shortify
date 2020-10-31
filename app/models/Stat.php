@@ -92,9 +92,8 @@ class Stat
 			$visitorsData = json_decode($visitorRow['visitors'], true);
 			foreach ($visitorsData as $visitorData) {
 				$label = trim($visitorData['city']) == '' ? 'Unknown' : "{$visitorData['city']} ({$visitorData['country']})";
-
 				$cities_labels[$label] = "'$label'";
-				$cities_data[$label] = $cities_data[$label] !== '' ? $cities_data[$label] + 1 : 0;
+				$cities_data[$label] = @$cities_data[$label] !== '' ? @$cities_data[$label] + 1 : 0;
 			}
 		}
 
