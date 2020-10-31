@@ -2,7 +2,7 @@
 
 Shorten long links web service.
 
-Demo: https://go.botify.ru/
+Demo: https://voicfy.ml
 
 ### Install
 1. `git clone https://github.com/aethletic/shortify.git`
